@@ -7,6 +7,13 @@ import nightSky from "./assets/night-sky.jpg";
 import peacock from "./assets/peacock-medallion.png";
 import vine from "./assets/vine-tile.png";
 
+// Gallery photos
+import photo1 from "./assets/photo1.jpg";
+import photo2 from "./assets/photo2.jpg";
+import photo3 from "./assets/photo3.jpg";
+import photo4 from "./assets/photo4.jpg";
+
+
 export const IMG = {
   heroFloral,
   vine,
@@ -18,26 +25,33 @@ export const IMG = {
   peacock,
 };
 
-/** Pre-wedding photography for the gallery wall. */
+
+/**
+ * Local pre-wedding photography
+ * used in the Gallery Wall.
+ *
+ * Each image has its own frame ratio
+ * according to the actual photo orientation.
+ */
 export const GALLERY = [
   {
-    src: "https://images.pexels.com/photos/25742763/pexels-photo-25742763.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    alt: "Tanya and Rohan seated together at a marble palace pavilion",
+    src: photo1,
+    alt: "Tanya and Rohan together in a beautiful wedding moment",
     shape: "arch" as const,
   },
   {
-    src: "https://images.pexels.com/photos/36967371/pexels-photo-36967371.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    alt: "The couple laughing together in front of a historic monument",
-    shape: "wide" as const,
-  },
-  {
-    src: "https://images.pexels.com/photos/31771915/pexels-photo-31771915.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    alt: "Tanya in a red saree holding Rohan's hand in a palace corridor",
+    src: photo2,
+    alt: "Tanya and Rohan sharing a special moment together",
     shape: "arch" as const,
   },
   {
-    src: "https://images.pexels.com/photos/36683122/pexels-photo-36683122.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    alt: "The couple in traditional attire at a heritage courtyard",
-    shape: "wide" as const,
+    src: photo3,
+    alt: "Tanya and Rohan enjoying a romantic wedding moment",
+    shape: "square" as const,
+  },
+  {
+    src: photo4,
+    alt: "Tanya and Rohan together in traditional wedding attire",
+    shape: "arch" as const,
   },
 ];
