@@ -10,22 +10,10 @@ import { Info } from "@/sections/Info";
 import { Rsvp } from "@/sections/Rsvp";
 import { cn } from "@/utils/cn";
 
-const INTRO_KEY = "tanya-rohan-intro";
-
-function introAlreadySeen() {
- 
-    return false;
-  }
-
-
 export default function App() {
-  const [introActive, setIntroActive] = useState(
-    () => !introAlreadySeen(),
-  );
-
-  const [revealed, setRevealed] = useState(
-    () => introAlreadySeen(),
-  );
+  // Rope intro should play on every page refresh
+  const [introActive, setIntroActive] = useState(true);
+  const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
     document.body.classList.toggle(
@@ -40,15 +28,6 @@ export default function App() {
 
   const handleRevealStart = useCallback(() => {
     setRevealed(true);
-
-    try {
-      window.sessionStorage.setItem(
-        INTRO_KEY,
-        "1",
-      );
-    } catch {
-      /* private mode — intro simply plays again */
-    }
   }, []);
 
   const handleEnter = useCallback(() => {
@@ -84,9 +63,10 @@ export default function App() {
           onViewEvents={() => scrollTo("events")}
         />
 
-        <Couple />
-
+        {/* Correct section order */}
         <Events />
+
+        <Couple />
 
         <Gallery />
 
@@ -99,16 +79,14 @@ export default function App() {
 
       {/* =========================================
           FLOATING CONTROLS
-          
-          IMPORTANT:
-          This is OUTSIDE the animated website
-          wrapper so position: fixed works
-          relative to the viewport.
+          Outside animated wrapper so fixed
+          positioning works correctly.
       ========================================= */}
       {revealed && <FloatingControls />}
 
       {/* =========================================
-          INTRO / ROPE ANIMATION
+          ROPE INTRO
+          Plays on EVERY refresh.
       ========================================= */}
       {introActive && (
         <RopeIntro
