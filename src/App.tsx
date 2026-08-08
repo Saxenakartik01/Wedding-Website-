@@ -13,64 +13,109 @@ import { cn } from "@/utils/cn";
 const INTRO_KEY = "tanya-rohan-intro";
 
 function introAlreadySeen() {
-  try {
-    return window.sessionStorage.getItem(INTRO_KEY) === "1";
-  } catch {
+ 
     return false;
   }
-}
+
 
 export default function App() {
-  const [introActive, setIntroActive] = useState(() => !introAlreadySeen());
-  const [revealed, setRevealed] = useState(() => introAlreadySeen());
+  const [introActive, setIntroActive] = useState(
+    () => !introAlreadySeen(),
+  );
+
+  const [revealed, setRevealed] = useState(
+    () => introAlreadySeen(),
+  );
 
   useEffect(() => {
-    document.body.classList.toggle("is-locked", introActive);
-    return () => document.body.classList.remove("is-locked");
+    document.body.classList.toggle(
+      "is-locked",
+      introActive,
+    );
+
+    return () => {
+      document.body.classList.remove("is-locked");
+    };
   }, [introActive]);
 
   const handleRevealStart = useCallback(() => {
     setRevealed(true);
+
     try {
-      window.sessionStorage.setItem(INTRO_KEY, "1");
+      window.sessionStorage.setItem(
+        INTRO_KEY,
+        "1",
+      );
     } catch {
       /* private mode — intro simply plays again */
     }
   }, []);
 
-  const handleEnter = useCallback(() => setIntroActive(false), []);
+  const handleEnter = useCallback(() => {
+    setIntroActive(false);
+  }, []);
 
   const scrollTo = useCallback((id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const element = document.getElementById(id);
+
+    if (!element) return;
+
+    element.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   }, []);
 
   return (
     <>
+      {/* =========================================
+          MAIN WEBSITE
+      ========================================= */}
       <div
         aria-hidden={introActive || undefined}
         className={cn(
           "origin-center transition-[opacity,transform] duration-[1500ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
-          revealed ? "scale-100 opacity-100" : "scale-[1.04] opacity-0",
+          revealed
+            ? "scale-100 opacity-100"
+            : "scale-[1.04] opacity-0",
         )}
       >
-        <main>
-          <Hero onViewEvents={() => scrollTo("events")} />
-          <Events />
-          <Couple />
-          <Gallery />
-          <Info />
-          <Rsvp />
-        </main>
+        <Hero
+          onViewEvents={() => scrollTo("events")}
+        />
+
+        <Couple />
+
+        <Events />
+
+        <Gallery />
+
+        <Info />
+
+        <Rsvp />
+
         <Footer />
       </div>
 
-      {revealed && (
-        <div className="rise" style={{ animationDelay: "900ms" }}>
-          <FloatingControls />
-        </div>
-      )}
+      {/* =========================================
+          FLOATING CONTROLS
+          
+          IMPORTANT:
+          This is OUTSIDE the animated website
+          wrapper so position: fixed works
+          relative to the viewport.
+      ========================================= */}
+      {revealed && <FloatingControls />}
 
-      {introActive && <RopeIntro onRevealStart={handleRevealStart} onEnter={handleEnter} />}
+      {/* =========================================
+          INTRO / ROPE ANIMATION
+      ========================================= */}
+      {introActive && (
+        <RopeIntro
+          onRevealStart={handleRevealStart}
+          onEnter={handleEnter}
+        />
+      )}
     </>
   );
 }
